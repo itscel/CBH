@@ -10,36 +10,37 @@ import {
   FlatList,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import Icon from "react-native-vector-icons/Ionicons";
 
 const App = () => {
   const initialState = {
-    id: 0,
+    id: "",
     title: "",
     description: "",
     completed: false,
   };
 
+
   const [todo, setTodo] = useState([
     {
-      id: 1,
+      id: `id-${Date.now()}`,
       title: "Buy groceries",
       description: "Milk, Bread, Eggs",
       completed: false,
     },
     {
-      id: 2,
+      id: `id-${Date.now() + 1}`, 
       title: "Do laundry",
       description: "Wash clothes",
       completed: false,
     },
     {
-      id: 3,
+      id: `id-${Date.now() + 2}`, 
       title: "Read a book",
       description: 'Read "The Great Gatsby"',
       completed: true,
     },
   ]);
+
   const [showModal, setShowModal] = useState(false);
   const [newTodo, setNewTodo] = useState(initialState);
   const [allChecked, setAllChecked] = useState(false);
@@ -58,28 +59,25 @@ const App = () => {
       return;
     }
 
-    const newId = todo.length ? todo[todo.length - 1].id + 1 : 1;
-    const updatedTodo = [{ ...newTodo, id: newId }, ...todo];
-    setTodo(updatedTodo);
+    const newId = `id-${Date.now()}`;
+
+    setTodo([{ ...newTodo, id: newId }, ...todo]);
     clearNewTodo();
     setShowModal(false);
   };
 
   const updateTodo = (item) => {
-    const updatedTodo = todo.map((todoItem) =>
-      todoItem.id === item.id
-        ? { ...todoItem, completed: !todoItem.completed }
-        : todoItem
+    setTodo(
+      todo.map((todoItem) =>
+        todoItem.id === item.id
+          ? { ...todoItem, completed: !todoItem.completed }
+          : todoItem
+      )
     );
-    setTodo(updatedTodo);
   };
 
   const toggleAll = (checkAll) => {
-    const updatedTodo = todo.map((item) => ({
-      ...item,
-      completed: checkAll,
-    }));
-    setTodo(updatedTodo);
+    setTodo(todo.map((item) => ({ ...item, completed: checkAll })));
     setAllChecked(checkAll);
   };
 
@@ -94,6 +92,7 @@ const App = () => {
         marginHorizontal: 10,
         borderLeftColor: "#ff66b2",
         borderLeftWidth: 5,
+        flexDirection: "row",
       }}
       onPress={() =>
         Alert.alert(`${item.title}`, `${item.description}`, [
@@ -130,14 +129,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-      <View
-        style={{
-          paddingHorizontal: 20,
-          paddingTop: 20,
-          backgroundColor: "#fff",
-          elevation: 5,
-        }}
-      >
+      <View style={{ padding: 20, backgroundColor: "#fff", elevation: 5 }}>
         <Text style={{ color: "#ff66b2", fontWeight: "bold", fontSize: 28 }}>
           To-Do List
         </Text>
@@ -150,8 +142,9 @@ const App = () => {
       <FlatList
         data={todo.filter((item) => !item.completed)}
         renderItem={renderTodo}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={{ flexGrow: 1, marginTop: 10 }}
+        removeClippedSubviews={true} 
         ListEmptyComponent={
           <Text style={{ textAlign: "center", marginTop: 20 }}>
             No pending tasks
@@ -162,8 +155,9 @@ const App = () => {
       <FlatList
         data={todo.filter((item) => item.completed)}
         renderItem={renderTodo}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={{ flexGrow: 1, marginTop: 10 }}
+        removeClippedSubviews={true}
         ListEmptyComponent={
           <Text style={{ textAlign: "center", marginTop: 20 }}>
             No completed tasks
@@ -175,8 +169,7 @@ const App = () => {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          paddingHorizontal: 20,
-          paddingVertical: 10,
+          padding: 20,
         }}
       >
         <TouchableOpacity
@@ -199,25 +192,26 @@ const App = () => {
           style={{
             backgroundColor: "#ff66b2",
             borderRadius: 8,
-            width: "40%",
+            width: "45%",
             alignItems: "center",
-            padding: 10,
-            flexDirection: "row",
             justifyContent: "center",
+            paddingVertical: 10,
+            paddingHorizontal: 15,
+            elevation: 4,
           }}
         >
-          <Icon
-            name={allChecked ? "checkbox-outline" : "square-outline"}
-            size={24}
-            color="#fff"
-            style={{ marginRight: 8 }}
-          />
-          <Text style={{ fontSize: 18, color: "#fff" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: "#fff",
+              fontWeight: "bold",
+            }}
+          >
             {allChecked ? "Uncheck All" : "Check All"}
           </Text>
         </TouchableOpacity>
       </View>
-
+      
       <Modal
         animationType="slide"
         visible={showModal}
@@ -226,7 +220,7 @@ const App = () => {
         <View
           style={{
             flex: 1,
-            paddingHorizontal: 20,
+            padding: 20,
             backgroundColor: "#f5f5f5",
             justifyContent: "center",
           }}
@@ -264,12 +258,13 @@ const App = () => {
             onChangeText={(text) => handleChange("title", text)}
             style={{
               backgroundColor: "#fff",
-              paddingHorizontal: 10,
+              padding: 10,
               borderRadius: 8,
               marginVertical: 10,
               borderColor: "#ff66b2",
               borderWidth: 1,
             }}
+            accessibilityLabel="Title input"
           />
           <TextInput
             placeholder="Description"
@@ -277,15 +272,18 @@ const App = () => {
             onChangeText={(text) => handleChange("description", text)}
             style={{
               backgroundColor: "#fff",
-              paddingHorizontal: 10,
+              padding: 10,
               borderRadius: 8,
               marginVertical: 10,
               borderColor: "#ff66b2",
               borderWidth: 1,
-              height: 100,
+              minHeight: 120,
+              maxHeight: 120,
               textAlignVertical: "top",
             }}
             multiline
+            numberOfLines={5}
+            accessibilityLabel="Description input"
           />
 
           <View style={{ width: "100%", alignItems: "center", marginTop: 20 }}>

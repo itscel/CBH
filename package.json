@@ -15,7 +15,8 @@
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.74.5",
-    "react-native-bouncy-checkbox": "^4.1.2"
+    "react-native-bouncy-checkbox": "^4.1.2",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
