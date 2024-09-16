@@ -172,20 +172,6 @@ const App = () => {
           padding: 20,
         }}
       >
-        <TouchableOpacity
-          onPress={() => setShowModal(true)}
-          style={{
-            backgroundColor: "#ff66b2",
-            borderRadius: 50,
-            width: 60,
-            height: 60,
-            alignItems: "center",
-            justifyContent: "center",
-            elevation: 8,
-          }}
-        >
-          <Text style={{ fontSize: 36, color: "#fff" }}>+</Text>
-        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => toggleAll(!allChecked)}
@@ -210,6 +196,22 @@ const App = () => {
             {allChecked ? "Uncheck All" : "Check All"}
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setShowModal(true)}
+          style={{
+            backgroundColor: "#ff66b2",
+            borderRadius: 50,
+            width: 60,
+            height: 60,
+            alignItems: "center",
+            justifyContent: "center",
+            elevation: 8,
+          }}
+        >
+          <Text style={{ fontSize: 36, color: "#fff" }}>+</Text>
+        </TouchableOpacity>
+        
       </View>
       
       <Modal
