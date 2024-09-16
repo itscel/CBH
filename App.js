@@ -92,7 +92,7 @@ const App = () => {
         marginHorizontal: 10,
         borderLeftColor: "#ff66b2",
         borderLeftWidth: 5,
-        flexDirection: "row",
+        flexDirection: "row", 
       }}
       onPress={() =>
         Alert.alert(`${item.title}`, `${item.description}`, [
@@ -113,16 +113,29 @@ const App = () => {
         onPress={() => updateTodo(item)}
         style={{ marginRight: 10 }}
       />
-      <Text
-        style={{
-          fontSize: 16,
-          textDecorationLine: item.completed ? "line-through" : "none",
-        }}
-      >
-        {item.title}
-      </Text>
+      <View style={{ flex: 1 }}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 16,
+            textDecorationLine: item.completed ? "line-through" : "none",
+            marginBottom: 4, 
+          }}
+        >
+          {item.title}
+        </Text>
+        <Text
+          style={{
+            fontSize: 14,
+            textDecorationLine: item.completed ? "line-through" : "none",
+          }}
+        >
+          {item.description}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
+  
 
   const pendingCount = todo.filter((item) => !item.completed).length;
   const completedCount = todo.filter((item) => item.completed).length;
@@ -211,7 +224,7 @@ const App = () => {
         >
           <Text style={{ fontSize: 36, color: "#fff" }}>+</Text>
         </TouchableOpacity>
-        
+
       </View>
       
       <Modal
