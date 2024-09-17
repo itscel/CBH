@@ -113,7 +113,7 @@ const App = () => {
         onPress={() => updateTodo(item)}
         style={{ marginRight: 10 }}
       />
-      <View style={{ flex: 1 }}>
+      <View>
         <Text
           style={{
             fontWeight: "bold",
